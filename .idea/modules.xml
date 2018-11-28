@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/VMService.iml" filepath="$PROJECT_DIR$/VMService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exportlibrart/exportlibrart.iml" filepath="$PROJECT_DIR$/exportlibrart/exportlibrart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/messageservice/messageservice.iml" filepath="$PROJECT_DIR$/messageservice/messageservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vmsetup/vmsetup.iml" filepath="$PROJECT_DIR$/vmsetup/vmsetup.iml" />
+    </modules>
+  </component>
+</project>
