@@ -2,10 +2,13 @@ package cn.ishenran.vm.vmcservice;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-import cn.ishenran.vm.serialport.SerialPortProcess;
+import cn.ishenran.vm.serialport.SerialPortProcessor;
+import cn.ishenran.vm.serialport.SerialPortUtil;
+import cn.ishenran.vm.serialport.config.SerialPortConfig;
 import vm.protocol.fuji.api.*;
 import vm.protocol.fuji.stub.IConfigIndMsgStub;
 import vm.protocol.fuji.stub.IControlIndMsgStub;
@@ -21,7 +24,16 @@ public class VmcService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        SerialPortProcess.getInstance().init("vm.protocol.fuji.Encoder","vm.protocol.fuji.Decoder");
+        VMMessageReceiver recevier = new VMMessageReceiver();
+        IntentFilter intentFilter = new IntentFilter(SerialPortConfig.BROADCAST_ACTION);
+        registerReceiver(recevier, intentFilter);
+        SerialPortProcessor.getInstance().init("vm.protocol.fuji.Encoder","vm.protocol.fuji.Decoder");
+    }
+
+    @Override
+    public void onDestroy() {
+        SerialPortUtil.closeSerialPort();
+        super.onDestroy();
     }
 
     @Override

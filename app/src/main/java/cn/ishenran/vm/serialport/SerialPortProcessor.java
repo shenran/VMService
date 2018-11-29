@@ -2,6 +2,8 @@ package cn.ishenran.vm.serialport;
 
 import android.serialport.api.SerialPort;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.IOException;
 
 import cn.ishenran.vm.message.Decoder;
@@ -9,20 +11,25 @@ import cn.ishenran.vm.message.Encoder;
 import vm.protocol.fuji.message.VmcBaseMsg;
 
 
-public class SerialPortProcess {
+public class SerialPortProcessor {
 
-    private static SerialPortProcess instance=null;
-    public static SerialPortProcess getInstance()
+    private static SerialPortProcessor instance=null;
+    public static SerialPortProcessor getInstance()
     {
         if(instance==null)
-            instance=new SerialPortProcess();
+            instance=new SerialPortProcessor();
         return instance;
     }
 
-    public void sendMessage(VmcBaseMsg msg)
+    public void sendMessage(JSONObject msg)
     {
         encoder.encode(msg);
     }
+    public void recevierMessage(JSONObject msg)
+    {
+        encoder.encode(msg);
+    }
+
     Encoder encoder=null;
     Decoder decoder=null;
     public void init(String encoderName, String decoderName)
@@ -46,5 +53,10 @@ public class SerialPortProcess {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void CloseSerialPort()
+    {
+        SerialPortUtil.closeSerialPort();
     }
 }

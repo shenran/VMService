@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import cn.ishenran.vm.serialport.SerialPortProcess;
 import vm.protocol.fuji.api.IMessage;
 
 public class SettingActivity extends AppCompatActivity {

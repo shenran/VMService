@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 
+import cn.ishenran.vm.serialport.config.SerialPortConfig;
 
 
 /**
@@ -33,8 +34,8 @@ public class SerialPortUtil {
         if (mSerialPort == null) {
             /* Read serial port parameters */
 
-            String path = "/dev/ttyS0";
-            int baudrate = 9600;
+            String path = SerialPortConfig.SERIAL_PORT_PATH;
+            int baudrate = SerialPortConfig.BAUD_RATE;
 
 			/* Check parameters */
             if ((path.length() == 0) || (baudrate == -1)) {
