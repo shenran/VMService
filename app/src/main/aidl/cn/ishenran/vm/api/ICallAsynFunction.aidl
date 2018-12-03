@@ -1,12 +1,12 @@
-// ICostIndMsg.aidl
-package vm.protocol.fuji.api;
+// ICallAsynFunction.aidl
+package cn.ishenran.vm.api;
 
 // Declare any non-default types here with import statements
 
-interface ICostIndMsg {
+interface ICallAsynFunction {
     /**
      * Demonstrates some basic types that you can use as parameters
      * and return values in AIDL.
      */
-   String createCostInd(int type, int machine, int column, int value);
+    String CallAsynFunction(int FunctionID,String data);
 }
