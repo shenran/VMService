@@ -12,10 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import vm.protocol.fuji.api.IMessage;
+import cn.ishenran.vm.api.ICallAsynFunction;
+import vm.protocol.test.api.VMMessage;
 
 public class SettingActivity extends AppCompatActivity {
 
+    VMMessage vmMessage=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,21 +30,20 @@ public class SettingActivity extends AppCompatActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    String o=iMessage.VMGetInfo().createTypeModule(1);
+
+                    boolean o=vmMessage.OpenDoor(10);
                     Log.d("OK", "onClick: "+o);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+
             }
         });
     }
-    private IMessage iMessage;
+    private ICallAsynFunction callAsynFunction;
     ServiceConnection mServiceConnection= new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            iMessage=IMessage.Stub.asInterface(service);
-            Log.d("iMessage", "iMessage: "+iMessage.getClass().getName());
+            callAsynFunction=ICallAsynFunction.Stub.asInterface(service);
+            //Log.d("iMessage", "iMessage: "+iMessage.getClass().getName());
+            vmMessage=new VMMessage(callAsynFunction);
         }
 
         @Override

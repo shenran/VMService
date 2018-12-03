@@ -1,12 +1,15 @@
 package cn.ishenran.vm.serialport;
 
 import android.serialport.api.SerialPort;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import cn.ishenran.vm.message.Decoder;
+import cn.ishenran.vm.lib.Decoder;
+import cn.ishenran.vm.message.MessageProcessor;
+
 
 public class SerialPortReadRunnable implements Runnable  {
     //SerialPort m_serialPort=null;
@@ -19,9 +22,15 @@ public class SerialPortReadRunnable implements Runnable  {
         //m_serialPort=serialPort;
         SerialPortInputStream=serialPort.getInputStream();
     }
-    boolean isRunning=true;
+    boolean isRunning;
+    public void StopThread()
+    {
+        isRunning=false;
+    }
     @Override
     public void run() {
+        Log.d("SerialPortReadRunnable", "run: ");
+        isRunning=true;
         int nMaxBufLength = 1024;
         byte[] buffer = new byte[nMaxBufLength];
         ByteArrayOutputStream message=new ByteArrayOutputStream();
@@ -35,9 +44,8 @@ public class SerialPortReadRunnable implements Runnable  {
                     if(byteRead > 0){
                         if(m_decoder.getDataByte(buffer,byteRead,message))
                         {
-                            message.flush();
                             byte[] bMessage=message.toByteArray();
-                            m_decoder.AddMessageQueue(bMessage);
+                            MessageProcessor.getInstance().AddReadMessageQueue(bMessage);
                             message.reset();
                         }
                     }
