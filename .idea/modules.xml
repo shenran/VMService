@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/VMService.iml" filepath="$PROJECT_DIR$/VMService.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/exportlibrart/exportlibrart.iml" filepath="$PROJECT_DIR$/exportlibrart/exportlibrart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fujilib/fujilib.iml" filepath="$PROJECT_DIR$/fujilib/fujilib.iml" />
       <module fileurl="file://$PROJECT_DIR$/messageservice/messageservice.iml" filepath="$PROJECT_DIR$/messageservice/messageservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/vmsetup/vmsetup.iml" filepath="$PROJECT_DIR$/vmsetup/vmsetup.iml" />
     </modules>
