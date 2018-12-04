@@ -1,1 +1,1 @@
-include ':app', ':exportlibrart', ':vmsetup', ':messageservice', ':fujilib'
+include ':app', ':exportlibrart', ':vmsetup', ':messageservice', ':fujilib', ':drivertest'
