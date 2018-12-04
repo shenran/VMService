@@ -28,6 +28,9 @@ import java.util.HashMap;
 import cn.ishenran.vm.lib.Decoder;
 import cn.ishenran.vm.lib.Encoder;
 
+/**
+ * 消息处理器
+ */
 public class MessageProcessor {
 
     static MessageProcessor instance = null;
@@ -37,8 +40,9 @@ public class MessageProcessor {
             instance = new MessageProcessor();
         return instance;
     }
-
+    //编码器
     private Encoder m_encoder = null;
+    //解码器
     private Decoder m_decoder = null;
 
     public void init(Encoder encoder, Decoder decoder) {
@@ -109,6 +113,12 @@ public class MessageProcessor {
         CallFunctionQueue.put(FunId, obj);
     }
 
+    /**
+     *
+     * @param id
+     * @param msg
+     * 返回通知，当消息有返回结果的时候通知同步接口停止等待
+     */
     public void RevReturnMessage(Integer id, JSONObject msg) {
         FunctionReturn obj = CallFunctionQueue.get(id);
         if (obj != null) {
@@ -122,6 +132,11 @@ public class MessageProcessor {
         }
     }
 
+    /**
+     *
+     * @return
+     * 串口写入同步
+     */
     public byte[] getWriteBuffer() {
         if (WriteMessageQueue.isEmpty()) {
             try {

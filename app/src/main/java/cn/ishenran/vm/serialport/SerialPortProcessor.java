@@ -27,6 +27,10 @@ import java.io.IOException;
 import cn.ishenran.vm.lib.Decoder;
 import cn.ishenran.vm.lib.Encoder;
 
+/**
+ * 串口处理器
+ *
+ */
 public class SerialPortProcessor {
 
     private static SerialPortProcessor instance=null;

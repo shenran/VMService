@@ -26,8 +26,11 @@ public class CallAsynFunction {
     JSONObject Msg2Send=null;
     FunctionReturn Msg2Recv=null;
 
-
-
+    /**
+     *
+     * @return
+     * 该方法在消息有返回的时候获取返回结果
+     */
     public  JSONObject getReturn()
     {
         //Log.d("getReturn", "getReturn: "+Msg2Recv.rev.toJSONString());
@@ -36,6 +39,12 @@ public class CallAsynFunction {
         else
             return null;
     }
+
+    /**
+     * CallAsynFunction
+     * @param strMsg
+     * 该方法实现异步消息转换成同步方法调用，超时时间为1s，1s后返回400
+     */
     public CallAsynFunction(String strMsg)
     {
         Msg2Send=JSONObject.parseObject(strMsg);

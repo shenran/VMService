@@ -14,13 +14,14 @@
  * limitations under the License.
  *
  * @Author:shenran@ishenran.cn
- * @LastModified:2018-12-04T10:49:49.421+08:00
+ * @LastModified:2018-12-04T16:20:26.044+08:00
  *
  *
  */
 package cn.ishenran.vm.lib;
 
 import com.alibaba.fastjson.JSONObject;
+
 import java.util.ArrayList;
 
 public interface Encoder {

@@ -14,20 +14,24 @@
  * limitations under the License.
  *
  * @Author:shenran@ishenran.cn
- * @LastModified:2018-12-04T10:49:49.421+08:00
+ * @LastModified:2018-12-04T16:20:25.987+08:00
  *
  *
  */
 package cn.ishenran.vm.lib;
 
 import com.alibaba.fastjson.JSONObject;
-import java.util.ArrayList;
 
-public interface Encoder {
-    //写入同步器，确定写入的时机
-    void WaitWrite();
-    //获取写入消息队列，等待串口写线程取出并写入串口
-    ArrayList<byte[]> getWriteMessageQueue();
-    //抽象编码器，用于将JSON对象转成串口字节串
-    Integer encode(JSONObject message);
+import java.io.ByteArrayOutputStream;
+
+public interface Decoder {
+
+    //抽象的解码器，用于编写串口解码方法，结果通过JSON格式返回
+    JSONObject decode(byte[] bytes);
+    //同步函数调用方法，根据返回值，获取串口读写的对位序列号
+    Integer getCallFunById(JSONObject rev);
+    //获取串口数据方法，用于完成串口消息的拼接和验证
+    boolean getDataByte(byte[] bytes, int len, ByteArrayOutputStream message);
+
+
 }

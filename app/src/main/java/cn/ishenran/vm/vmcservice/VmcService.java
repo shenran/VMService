@@ -24,10 +24,13 @@ package cn.ishenran.vm.vmcservice;
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.alibaba.fastjson.JSONObject;
+
+import java.io.File;
 
 import cn.ishenran.vm.api.ICallAsynFunction;
 import cn.ishenran.vm.lib.Decoder;
@@ -35,13 +38,36 @@ import cn.ishenran.vm.lib.Encoder;
 import cn.ishenran.vm.message.CallAsynFunction;
 import cn.ishenran.vm.message.MessageProcessor;
 import cn.ishenran.vm.serialport.SerialPortProcessor;
-import cn.ishenran.vm.serialport.SerialPortUtil;
 import cn.ishenran.vm.serialport.config.SerialPortConfig;
+import dalvik.system.DexClassLoader;
 
 public class VmcService extends Service {
     public VmcService() {
     }
 
+    private Boolean init()
+    {
+        final File optimizedDexOutputPath = new File(SerialPortConfig.DRIVER_JAR);
+        // Initialize the class loader with the secondary dex file.
+        DexClassLoader cl = new DexClassLoader(optimizedDexOutputPath.getAbsolutePath(),
+                Environment.getExternalStorageDirectory().toString(), null, getClassLoader());
+        Class libDecoderClazz = null;
+        Class libEncoderClazz = null;
+        try {
+            libDecoderClazz = cl.loadClass(SerialPortConfig.DECODER_NAME);
+            libEncoderClazz = cl.loadClass(SerialPortConfig.ENCODER_NAME);
+            encoder= (Encoder) libEncoderClazz.newInstance();
+            decoder= (Decoder) libDecoderClazz.newInstance();
+            return true;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     Encoder encoder=null;
     Decoder decoder=null;
     @Override
@@ -50,14 +76,7 @@ public class VmcService extends Service {
         VMMessageReceiver recevier = new VMMessageReceiver();
         IntentFilter intentFilter = new IntentFilter(SerialPortConfig.BROADCAST_ACTION);
         registerReceiver(recevier, intentFilter);
-        try {
-            encoder= vm.protocol.test.Encoder.class.newInstance();
-            decoder= vm.protocol.test.Decoder.class.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        init();
 
         MessageProcessor.getInstance().init(encoder,decoder);
         SerialPortProcessor.getInstance().init(encoder,decoder);

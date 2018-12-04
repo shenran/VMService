@@ -68,116 +68,6 @@ static speed_t getBaudrate(jint baudrate)
 	}
 }
 
-/*
- * Class:     android_serialport_SerialPort
- * Method:    open
- * Signature: (Ljava/lang/String;II)Ljava/io/FileDescriptor;
- */
-JNIEXPORT jobject JNICALL Java_android_1serialport_1api_SerialPort_open
-  (JNIEnv *env, jclass thiz, jstring path, jint baudrate, jint flags, jint databits, jint stopbits, jint parity)
-{
-	int fd;
-	speed_t speed;
-	jobject mFileDescriptor;
-
-	/* Check arguments */
-	{
-		speed = getBaudrate(baudrate);
-		if (speed == -1) {
-			/* TODO: throw an exception */
-			LOGE("Invalid baudrate");
-			return NULL;
-		}
-	}
-
-	/* Opening device */
-	{
-		jboolean iscopy;
-		const char *path_utf = (*env)->GetStringUTFChars(env, path, &iscopy);
-		LOGD("Opening serial port %s with flags 0x%x", path_utf, O_RDWR | flags);
-		fd = open(path_utf, O_RDWR | flags);
-		LOGD("open() fd = %d", fd);
-		(*env)->ReleaseStringUTFChars(env, path, path_utf);
-		if (fd == -1)
-		{
-			/* Throw an exception */
-			LOGE("Cannot open port");
-			/* TODO: throw an exception */
-			return NULL;
-		}
-	}
-
-	/* Configure device */
-	{
-		struct termios cfg;
-		LOGD("Configuring serial port");
-		if (tcgetattr(fd, &cfg))
-		{
-			LOGE("tcgetattr() failed");
-			close(fd);
-			/* TODO: throw an exception */
-			return NULL;
-		}
-
-		cfg.c_cflag |= CLOCAL | CREAD;
-		cfg.c_cflag &= ~CRTSCTS;
-		cfg.c_cflag &= ~CSIZE;
-		cfg.c_cflag |= CS8;
-		cfg.c_cflag &= ~(PARENB|CSTOPB);
-		cfg.c_iflag |= INPCK;
-		cfg.c_iflag &= ~ (IXON | IXOFF | IXANY);
-		cfg.c_lflag &= ~ (ICANON | ECHO | ECHOE | ISIG);
-		cfg.c_iflag &= ~ (INLCR | ICRNL | IGNCR);
-		cfg.c_oflag &= ~(ONLCR | OCRNL);
-		cfmakeraw(&cfg);
-		tcflush(fd, TCIOFLUSH);
-		cfsetispeed(&cfg, speed);
-		cfsetospeed(&cfg, speed);
-		set_Parity(&cfg,databits,stopbits,parity);
-
-		if (tcsetattr(fd, TCSANOW, &cfg))
-		{
-			LOGE("tcsetattr() failed");
-			close(fd);
-			/* TODO: throw an exception */
-			return NULL;
-		}
-	}
-
-
-	/* Create a corresponding file descriptor */
-	{
-		jclass cFileDescriptor = (*env)->FindClass(env, "java/io/FileDescriptor");
-		jmethodID iFileDescriptor = (*env)->GetMethodID(env, cFileDescriptor, "<init>", "()V");
-		jfieldID descriptorID = (*env)->GetFieldID(env, cFileDescriptor, "descriptor", "I");
-		mFileDescriptor = (*env)->NewObject(env, cFileDescriptor, iFileDescriptor);
-		(*env)->SetIntField(env, mFileDescriptor, descriptorID, (jint)fd);
-	}
-
-
-	return mFileDescriptor;
-}
-
-/*
- * Class:     cedric_serial_SerialPort
- * Method:    close
- * Signature: ()V
- */
-JNIEXPORT void JNICALL Java_android_1serialport_1api_SerialPort_close
-  (JNIEnv *env, jobject thiz)
-{
-	jclass SerialPortClass = (*env)->GetObjectClass(env, thiz);
-	jclass FileDescriptorClass = (*env)->FindClass(env, "java/io/FileDescriptor");
-
-	jfieldID mFdID = (*env)->GetFieldID(env, SerialPortClass, "mFd", "Ljava/io/FileDescriptor;");
-	jfieldID descriptorID = (*env)->GetFieldID(env, FileDescriptorClass, "descriptor", "I");
-
-	jobject mFd = (*env)->GetObjectField(env, thiz, mFdID);
-	jint descriptor = (*env)->GetIntField(env, mFd, descriptorID);
-
-	LOGD("close(fd = %d)", descriptor);
-	close(descriptor);
-}
 
 /**
  *@brief   设置串口数据位，停止位和效验位
@@ -238,7 +128,7 @@ int set_Parity(struct termios *options, int databits, int stopbits, int parity) 
 		break;
 	}
 
-
+    return 0;
 }
 
 

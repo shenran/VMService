@@ -80,19 +80,6 @@ public class SerialPortUtil {
     }
 
 
-    /**
-     * 获取机器可用的串口端口号并保存到SharedPreference中
-     */
-    public static void initSerialPort() {
-        SerialPortFinder serialPortFinder = new SerialPortFinder();
-        String[] entries = serialPortFinder.getAllDevices();
-        String[] entryValues = serialPortFinder.getAllDevicesPath();
-        if (entries != null) {
-            for (int i = 0; i < entries.length; i++) {
-                Log.d("entries", entries[i]);
-            }
-        }
-    }
 
     /**
      * 计算校验位的方法

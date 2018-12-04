@@ -14,20 +14,25 @@
  * limitations under the License.
  *
  * @Author:shenran@ishenran.cn
- * @LastModified:2018-12-04T10:49:49.421+08:00
+ * @LastModified:2018-12-04T16:18:11.778+08:00
  *
  *
  */
-package cn.ishenran.vm.lib;
 
-import com.alibaba.fastjson.JSONObject;
-import java.util.ArrayList;
+package vm.protocol.test;
 
-public interface Encoder {
-    //写入同步器，确定写入的时机
-    void WaitWrite();
-    //获取写入消息队列，等待串口写线程取出并写入串口
-    ArrayList<byte[]> getWriteMessageQueue();
-    //抽象编码器，用于将JSON对象转成串口字节串
-    Integer encode(JSONObject message);
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+/**
+ * Example local unit test, which will execute on the development machine (host).
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ */
+public class ExampleUnitTest {
+    @Test
+    public void addition_isCorrect() {
+        assertEquals(4, 2 + 2);
+    }
 }

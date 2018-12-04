@@ -21,11 +21,15 @@
 package cn.ishenran.vm.lib;
 
 import com.alibaba.fastjson.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-
 public interface Decoder {
+
+    //抽象的解码器，用于编写串口解码方法，结果通过JSON格式返回
     JSONObject decode(byte[] bytes);
+    //同步函数调用方法，根据返回值，获取串口读写的对位序列号
     Integer getCallFunById(JSONObject rev);
+    //获取串口数据方法，用于完成串口消息的拼接和验证
     boolean getDataByte(byte[] bytes,int len,ByteArrayOutputStream message);
+
+
 }
